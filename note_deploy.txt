@@ -1,14 +1,15 @@
 môi trường Docker trên CentOS 7, với 2 project:
 
-Frontend (React Vite): 03-react-vite-final
+Frontend (React Vite): smart-react-vite-final
 
-Backend (Spring Boot): 04-java-spring-final
+Backend (Spring Boot): smart-java-spring-final
+
 và một file docker-compose.yml để chạy cả frontend, backend, và MySQL qua Nginx.
  tôi muốn lấy code từ github và để deploy lại toàn bộ hệ thống trên Docker server.
-https://github.com/sontx13/smart-react-vite-final.git
-https://github.com/sontx13/smart-java-spring-final.git
+git clone https://github.com/sontx13/smart-react-vite-final.git
+git clone https://github.com/sontx13/smart-java-spring-final.git
 
-và trở domain vnptbacninh.com thay cho http://150.95.104.235/
+Cấp ssl https cho vnptbacninh.com 
 
 Phần 1: Cấu trúc thư mục 
 [root@150-95-104-235 projects]# ll
@@ -22,7 +23,7 @@ drwxr-xr-x 11 root root 4096 Oct 14 15:58 upload-docker
 
 
 
-Phần 2: nginx và file default.conf 
+Phần 2: build-docker có: nginx và file default.conf 
 
 upstream backend-spring-rest {
         server backend-spring:8080;
@@ -54,7 +55,7 @@ server {
 
 }
 
-Phần 2: Dockerfile trong 04-java-spring-final:
+Phần 2: Dockerfile trong smart-java-spring-final:
 # Stage 1: Build the application
 FROM gradle:8.7-jdk17 AS build
 COPY --chown=gradle:gradle . /project/smart
@@ -73,5 +74,51 @@ Phần 3: .env.uat
 
 # NODE_ENV=production
 PORT=3000
-VITE_BACKEND_URL=
+VITE_BACKEND_URL=https://vnptbacninh.com
 VITE_ACL_ENABLE=true
+
+
+Phần 4: docker-compose.yml trong 
+
+services:
+  nginx:
+    image: nginx:1.23
+    volumes:
+      - ../smart-react-vite-final/dist:/usr/share/nginx/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+    ports:
+      - "80:80"
+      - "443:443"
+  db-mysql:
+    image: mysql:5.7.40
+    restart: always
+    environment:
+      - MYSQL_DATABASE=smart
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - "3307:3306"
+    expose:
+      - "3306"
+    volumes:
+      - mysql-data:/var/lib/mysql  # Thêm dòng này để lưu trữ dữ liệu MySQL
+      
+  backend-spring:
+    build:
+      context: ../smart-java-spring-final
+      dockerfile: Dockerfile
+    ports:
+      - "8088:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/smart
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - PROJECT_UPLOAD_FILE_BASE_URI=file:///uploads/
+    depends_on:
+      - db-mysql
+    volumes:
+      - ../upload-docker/:/uploads/
+    # docker compose -p sontx-spring-rest up -d
+volumes:
+  mysql-data:  # Khai báo volume này
