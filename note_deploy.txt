@@ -1,0 +1,82 @@
+môi trường Docker trên CentOS 7, với 2 project:
+
+Frontend (React Vite): 03-react-vite-final
+
+Backend (Spring Boot): 04-java-spring-final
+và một file docker-compose.yml để chạy cả frontend, backend, và MySQL qua Nginx.
+ tôi muốn lấy code từ github và để deploy lại toàn bộ hệ thống trên Docker server.
+ https://github.com/sontx13/03-react-vite-final
+ https://github.com/sontx13/04-java-spring-final.git
+
+và trở domain  vnptbacninh.com thay cho http://150.95.104.235/
+
+Phần 1: Cấu trúc thư mục 
+Last login: Thu Jun 19 15:16:27 2025 from 14.241.58.88
+[root@150-95-104-235 ~]# docker ps
+CONTAINER ID   IMAGE                              COMMAND                  CREATED         STATUS         PORTS                                                                      NAMES
+c0ea586de801   sontx-spring-rest-backend-spring   "java -jar /project/…"   10 months ago   Up 10 months   0.0.0.0:8088->8080/tcp, :::8088->8080/tcp                                  sontx-spring-rest-backend-spring-1
+626148651c3e   nginx:1.23                         "/docker-entrypoint.…"   10 months ago   Up 10 months   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp   sontx-spring-rest-nginx-1
+069411f5299e   mysql:5.7.40                       "docker-entrypoint.s…"   10 months ago   Up 10 months   33060/tcp, 0.0.0.0:3307->3306/tcp, :::3307->3306/tcp                       sontx-spring-rest-db-mysql-1
+[root@150-95-104-235 ~]# cd projects/
+[root@150-95-104-235 projects]# ll
+total 20
+drwxr-xr-x 6 root root 4096 Dec 14  2024 03-react-vite-final
+drwxr-xr-x 8 root root 4096 Dec 14  2024 04-java-spring-final
+drwxr-xr-x 3 root root 4096 Jun 29  2024 build-docker
+drwxr-xr-x 3 root root 4096 Jun 29  2024 updoad
+drwxr-xr-x 3 root root 4096 Jun 29  2024 upload-docker
+
+
+Phần 2: nginx và file default.conf 
+
+upstream backend-spring-rest {
+        server backend-spring:8080;
+}
+
+server {
+    listen 80;
+    server_name vnptbacninh.com;
+
+    location / {
+        root /usr/share/nginx/html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://backend-spring-rest;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_set_header X-NginX-Proxy true;
+    }
+
+    location /storage {
+        try_files $uri $uri/ @proxy;
+    }
+    location @proxy {
+        proxy_pass http://backend-spring-rest;
+    }
+
+}
+
+Phần 2: Dockerfile trong 04-java-spring-final:
+# Stage 1: Build the application
+FROM gradle:8.7-jdk17 AS build
+COPY --chown=gradle:gradle . /project/smart
+WORKDIR /project/smart
+
+#skip task: test
+RUN gradle clean build -x test --no-daemon
+
+# Stage 2: Run the application
+FROM openjdk:17-slim
+EXPOSE 8080
+COPY --from=build /project/smart/build/libs/*.jar /project/spring-boot-project.jar
+ENTRYPOINT ["java", "-jar", "/project/spring-boot-project.jar"]
+
+Phần 3: .env.uat
+
+# NODE_ENV=production
+PORT=3000
+VITE_BACKEND_URL=
+VITE_ACL_ENABLE=true
