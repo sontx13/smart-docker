@@ -5,26 +5,21 @@ Frontend (React Vite): 03-react-vite-final
 Backend (Spring Boot): 04-java-spring-final
 và một file docker-compose.yml để chạy cả frontend, backend, và MySQL qua Nginx.
  tôi muốn lấy code từ github và để deploy lại toàn bộ hệ thống trên Docker server.
- https://github.com/sontx13/03-react-vite-final
- https://github.com/sontx13/04-java-spring-final.git
+https://github.com/sontx13/smart-react-vite-final.git
+https://github.com/sontx13/smart-java-spring-final.git
 
-và trở domain  vnptbacninh.com thay cho http://150.95.104.235/
+và trở domain vnptbacninh.com thay cho http://150.95.104.235/
 
 Phần 1: Cấu trúc thư mục 
-Last login: Thu Jun 19 15:16:27 2025 from 14.241.58.88
-[root@150-95-104-235 ~]# docker ps
-CONTAINER ID   IMAGE                              COMMAND                  CREATED         STATUS         PORTS                                                                      NAMES
-c0ea586de801   sontx-spring-rest-backend-spring   "java -jar /project/…"   10 months ago   Up 10 months   0.0.0.0:8088->8080/tcp, :::8088->8080/tcp                                  sontx-spring-rest-backend-spring-1
-626148651c3e   nginx:1.23                         "/docker-entrypoint.…"   10 months ago   Up 10 months   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp   sontx-spring-rest-nginx-1
-069411f5299e   mysql:5.7.40                       "docker-entrypoint.s…"   10 months ago   Up 10 months   33060/tcp, 0.0.0.0:3307->3306/tcp, :::3307->3306/tcp                       sontx-spring-rest-db-mysql-1
-[root@150-95-104-235 ~]# cd projects/
 [root@150-95-104-235 projects]# ll
 total 20
-drwxr-xr-x 6 root root 4096 Dec 14  2024 03-react-vite-final
-drwxr-xr-x 8 root root 4096 Dec 14  2024 04-java-spring-final
-drwxr-xr-x 3 root root 4096 Jun 29  2024 build-docker
-drwxr-xr-x 3 root root 4096 Jun 29  2024 updoad
-drwxr-xr-x 3 root root 4096 Jun 29  2024 upload-docker
+drwxr-xr-x  4 root root 4096 Oct 14 16:57 build-docker
+drwxr-xr-x  6 root root 4096 Oct 14 21:23 smart-java-spring-final
+drwxr-xr-x  6 root root 4096 Oct 14 21:21 smart-react-vite-final
+drwxr-xr-x  3 root root 4096 Jun 29  2024 updoad
+drwxr-xr-x  3 root root 4096 Oct 14 15:58 upload
+drwxr-xr-x 11 root root 4096 Oct 14 15:58 upload-docker
+
 
 
 Phần 2: nginx và file default.conf 
