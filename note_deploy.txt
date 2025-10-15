@@ -4,12 +4,13 @@ Frontend (React Vite): smart-react-vite-final
 
 Backend (Spring Boot): smart-java-spring-final
 
+frontend build ở local ra file dist
 và một file docker-compose.yml để chạy cả frontend, backend, và MySQL qua Nginx.
  tôi muốn lấy code từ github và để deploy lại toàn bộ hệ thống trên Docker server.
 git clone https://github.com/sontx13/smart-react-vite-final.git
 git clone https://github.com/sontx13/smart-java-spring-final.git
 
-Cấp ssl https cho vnptbacninh.com 
+
 
 Phần 1: Cấu trúc thư mục 
 [root@150-95-104-235 projects]# ll
@@ -70,7 +71,7 @@ EXPOSE 8080
 COPY --from=build /project/smart/build/libs/*.jar /project/spring-boot-project.jar
 ENTRYPOINT ["java", "-jar", "/project/spring-boot-project.jar"]
 
-Phần 3: .env.uat
+Phần 3:  npm run build-uat với .env.uat
 
 # NODE_ENV=production
 PORT=3000
