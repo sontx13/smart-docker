@@ -1,3 +1,45 @@
+/root/projects/
+├── build-docker/
+│   ├── docker-compose.yml
+│   └── nginx/
+│       └── default.conf
+├── smart-java-spring-final/
+│   └── Dockerfile
+├── smart-react-vite-final/
+│   ├── dist/                ← build sẵn tại local
+│   └── ...
+└── upload-docker/
+🚀 Cách deploy
+
+Build frontend tại local:
+
+cd /root/projects/smart-react-vite-final
+npm install
+npm run build
+
+
+→ tạo ra thư mục /root/projects/smart-react-vite-final/dist
+
+Build & run toàn bộ stack:
+
+cd /root/projects/build-docker
+docker compose down -v
+docker compose build
+docker compose up -d
+
+
+Kiểm tra:
+
+docker ps
+docker logs nginx --tail=50
+docker logs backend-spring --tail=50
+
+
+Truy cập:
+
+https://vnptbacninh.com/
+https://vnptbacninh.com/api/v1/banners
+
 🚀 PHẦN 1: Cập nhật code mới nhất
 cd /root/projects/smart-java-spring-final
 git pull origin main
@@ -18,3 +60,7 @@ docker logs -f build-docker-backend-spring-1
 
 docker network connect sontx-spring-rest_default build-docker-backend-spring-1
 docker restart sontx-spring-rest-nginx-1
+
+
+docker-compose down
+docker-compose up -d
