@@ -1,0 +1,20 @@
+🚀 PHẦN 1: Cập nhật code mới nhất
+cd /root/projects/smart-java-spring-final
+git pull origin main
+
+
+# Bước 1: build lại image backend mới nhất từ code git
+docker compose build backend-spring
+
+# Bước 2: restart backend mà KHÔNG ảnh hưởng mysql/nginx
+docker compose up -d --no-deps backend-spring
+
+# Bước 3: kiểm tra container backend
+docker ps
+
+
+docker logs -f build-docker-backend-spring-1
+
+
+docker network connect sontx-spring-rest_default build-docker-backend-spring-1
+docker restart sontx-spring-rest-nginx-1

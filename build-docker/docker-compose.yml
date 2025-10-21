@@ -10,8 +10,9 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-        - backend-spring
+      - backend-spring
     restart: always
+
   db-mysql:
     image: mysql:5.7.40
     restart: always
@@ -23,8 +24,13 @@ services:
     expose:
       - "3306"
     volumes:
-      - mysql-data:/var/lib/mysql  # Thêm dòng này để lưu trữ dữ liệu MySQL
-      
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend-spring:
     build:
       context: ../smart-java-spring-final
@@ -37,10 +43,9 @@ services:
       - SPRING_DATASOURCE_PASSWORD=123456
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - PROJECT_UPLOAD_FILE_BASE_URI=file:///uploads/
-    depends_on:
-      - db-mysql
     volumes:
       - ../upload-docker/:/uploads/
-    # docker compose -p sontx-spring-rest up -d
+    restart: always
+
 volumes:
-  mysql-data:  # Khai báo volume này
+  mysql-data:
