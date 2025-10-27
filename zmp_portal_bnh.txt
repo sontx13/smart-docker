@@ -1,0 +1,14 @@
+e gửi thông tin nhé: 
+1. Backend: Java Spring - Viết API
+	+ Git: https://github.com/sontx13/smart-java-spring-final.git
+	+ Java: 17
+2. Fontend-Admin: React 
+	+ Git: https://github.com/sontx13/smart-react-vite-final.git
+	+ Node: 18.20.3
+3. Zalo mini App: 
+	+ Git: https://github.com/sontx13/cong-ttdt-bacninh.git
+	
+
+	
+	
+	
