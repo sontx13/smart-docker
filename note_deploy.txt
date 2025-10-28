@@ -22,6 +22,11 @@ drwxr-xr-x  3 root root 4096 Jun 29  2024 updoad
 drwxr-xr-x  3 root root 4096 Oct 14 15:58 upload
 drwxr-xr-x 11 root root 4096 Oct 14 15:58 upload-docker
 
+[root@150-95-104-235 projects]# cd build-docker/
+[root@150-95-104-235 build-docker]# ll
+total 8
+-rw-r--r-- 1 root root 1729 Oct 21 13:17 docker-compose.yml
+drwxr-xr-x 2 root root 4096 Oct 14 23:41 nginx
 
 
 Phần 2: build-docker có: nginx và file default.conf 

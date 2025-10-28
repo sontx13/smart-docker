@@ -64,3 +64,30 @@ docker restart sontx-spring-rest-nginx-1
 
 docker-compose down
 docker-compose up -d
+
+-----------------------------------------------------------------------------------------
+
+🚀 CÁCH TRIỂN KHAI BUILD FRONTEND LOCAL → SERVER (Nginx Docker)
+🧩 1. Build ở local
+
+Tại thư mục dự án React/Vite trên máy bạn:
+
+npm run build-uat
+
+
+Khi xong, bạn sẽ có thư mục:
+
+smart-react-vite-final/dist/
+
+
+Đây là toàn bộ file tĩnh (HTML, CSS, JS, hình ảnh...) sẵn sàng để deploy.
+
+cd ../smart-react-vite-final/
+
+git pull
+
+Bước 4. Restart lại nginx container
+ cd ../build-docker/
+docker-compose restart nginx
+
+nên khi bạn ghi đè dist, Nginx sẽ tự đọc bản mới luôn.
