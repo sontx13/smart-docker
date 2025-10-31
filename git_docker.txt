@@ -9,61 +9,35 @@
 │   ├── dist/                ← build sẵn tại local
 │   └── ...
 └── upload-docker/
-🚀 Cách deploy
 
-Build frontend tại local:
-
-cd /root/projects/smart-react-vite-final
-npm install
-npm run build
-
-
-→ tạo ra thư mục /root/projects/smart-react-vite-final/dist
-
-Build & run toàn bộ stack:
-
+⚙️ CÁC BƯỚC CHI TIẾT
+🧱 1. Dừng container backend cũ
 cd /root/projects/build-docker
-docker compose down -v
-docker compose build
-docker compose up -d
+docker-compose stop backend-spring
 
-
-Kiểm tra:
-
-docker ps
-docker logs nginx --tail=50
-docker logs backend-spring --tail=50
-
-
-Truy cập:
-
-https://vnptbacninh.com/
-https://vnptbacninh.com/api/v1/banners
-
-🚀 PHẦN 1: Cập nhật code mới nhất
+📦 2. Cập nhật code backend mới nhất
 cd /root/projects/smart-java-spring-final
 git pull origin main
 
 
-# Bước 1: build lại image backend mới nhất từ code git
-docker compose build backend-spring
+⚠️ Nếu bạn gặp lỗi kiểu “You have unstaged changes” thì dùng:
 
-# Bước 2: restart backend mà KHÔNG ảnh hưởng mysql/nginx
-docker compose up -d --no-deps backend-spring
+git reset --hard HEAD
+git pull origin main
 
-# Bước 3: kiểm tra container backend
+☕ 3. Build lại image backend
+cd /root/projects/build-docker
+docker-compose build backend-spring
+
+
+Dòng này sẽ chạy lại Dockerfile trong smart-java-spring-final
+→ chạy gradle clean build -x test → tạo JAR → copy qua image.
+
+🚀 4. Khởi động lại backend mới
+docker-compose up -d backend-spring
+
+🔍 5. Kiểm tra lại container
 docker ps
-
-
-docker logs -f build-docker-backend-spring-1
-
-
-docker network connect sontx-spring-rest_default build-docker-backend-spring-1
-docker restart sontx-spring-rest-nginx-1
-
-
-docker-compose down
-docker-compose up -d
 
 -----------------------------------------------------------------------------------------
 
