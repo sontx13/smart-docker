@@ -20,23 +20,24 @@ cd /root/projects/smart-java-spring-final
 git pull origin main
 
 
-⚠️ Nếu bạn gặp lỗi kiểu “You have unstaged changes” thì dùng:
+Quay lại thư mục build-docker:
 
-git reset --hard HEAD
-git pull origin main
-
-☕ 3. Build lại image backend
-cd /root/projects/build-docker
-docker-compose build backend-spring
+cd ../build-docker
 
 
-Dòng này sẽ chạy lại Dockerfile trong smart-java-spring-final
-→ chạy gradle clean build -x test → tạo JAR → copy qua image.
+Rồi rebuild toàn bộ:
 
-🚀 4. Khởi động lại backend mới
-docker-compose up -d backend-spring
+docker compose build --no-cache
 
-🔍 5. Kiểm tra lại container
+🚀 Bước 5: Khởi động lại hệ thống
+
+Sau khi build xong, chạy:
+
+docker compose up -d
+
+
+Xem trạng thái:
+
 docker ps
 
 -----------------------------------------------------------------------------------------

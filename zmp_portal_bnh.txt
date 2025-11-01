@@ -9,12 +9,10 @@ e gửi thông tin nhé:
 	+ Git: https://github.com/sontx13/cong-ttdt-bacninh.git
 	
 Bug:
-+ Hotline font-end admin bỏ thêm url
-+ backend get theo app.id=5 nữa, active=1
-+ Hỏi đáp backend chưa thêm upload file
+
 + Sửa hỏi đáp lỗi
-+ Sắp xếp hỏi đáp
-+ Gửi câu hỏi
++ Gửi câu hỏi them gio hoi
++ sua them gio cau tra loi
 
 	
 	
