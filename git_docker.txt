@@ -10,6 +10,13 @@
 │   └── ...
 └── upload-docker/
 
+
+npm run build-uat
+git pull
+docker compose build --no-cache
+docker compose up -d
+
+
 ⚙️ CÁC BƯỚC CHI TIẾT
 🧱 1. Dừng container backend cũ
 cd /root/projects/build-docker
@@ -66,3 +73,20 @@ Bước 4. Restart lại nginx container
 docker-compose restart nginx
 
 nên khi bạn ghi đè dist, Nginx sẽ tự đọc bản mới luôn.
+
+-----------------------------------------------------------------------------------------
+docker exec -it smart-db mysql -u root -p
+Rồi trong MySQL prompt:
+
+sql
+Copy code
+SET GLOBAL time_zone = '+07:00';
+SET time_zone = '+07:00';
+
+
+git init
+git remote add origin https://scm.vnptlab.com/zalo-mini-app/cong-thong-tin-dien-tu-tinh-bac-ninh.git
+git checkout -b dev
+git add .
+git commit -m "Khởi tạo dự án"
+git push origin dev --force

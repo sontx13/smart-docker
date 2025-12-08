@@ -1,3 +1,16 @@
+adminbgg Bgg!123456!
+hướng dẫn cài môi trường Docker, git trên Ubuntu 24.04 LTS để chạy
+với 2 project:
+
+Frontend (React Vite): smart-react-vite-final
+
+Backend (Spring Boot): smart-java-spring-final
+
+frontend build ở local ra file dist
+và một file docker-compose.yml để chạy cả frontend, backend, và MySQL qua Nginx.
+ tôi muốn lấy code từ github và để deploy lại toàn bộ hệ thống trên Docker server
+ 
+
 môi trường Docker trên CentOS 7, với 2 project:
 
 Frontend (React Vite): smart-react-vite-final
