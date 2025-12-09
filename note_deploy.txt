@@ -1,4 +1,5 @@
-adminbgg Bgg!123456!
+10.21.30.78
+adminbgg - Bgg!123456!
 hướng dẫn cài môi trường Docker, git trên Ubuntu 24.04 LTS để chạy
 với 2 project:
 
@@ -9,7 +10,20 @@ Backend (Spring Boot): smart-java-spring-final
 frontend build ở local ra file dist
 và một file docker-compose.yml để chạy cả frontend, backend, và MySQL qua Nginx.
  tôi muốn lấy code từ github và để deploy lại toàn bộ hệ thống trên Docker server
- 
+
+sudo apt update
+sudo apt install git -y
+git --version
+
+1. Thêm user vào nhóm docker:
+sudo usermod -aG docker $USER
+
+2. Áp dụng ngay không cần reboot:
+newgrp docker
+
+cd ~/smart-app
+docker compose build
+docker compose up -d
 
 môi trường Docker trên CentOS 7, với 2 project:
 
@@ -17,11 +31,14 @@ Frontend (React Vite): smart-react-vite-final
 
 Backend (Spring Boot): smart-java-spring-final
 
+
+
 frontend build ở local ra file dist
 và một file docker-compose.yml để chạy cả frontend, backend, và MySQL qua Nginx.
  tôi muốn lấy code từ github và để deploy lại toàn bộ hệ thống trên Docker server.
 git clone https://github.com/sontx13/smart-react-vite-final.git
 git clone https://github.com/sontx13/smart-java-spring-final.git
+git clone https://github.com/sontx13/smart-docker.git
 
 
 
